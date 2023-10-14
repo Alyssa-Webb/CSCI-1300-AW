@@ -1,7 +1,7 @@
 // CSCI 1300 Fall 2023
 // Author: Alyssa Webb
 // TA: Anil
-// Question 8
+// Question 8 - Full Application
 
 #include <iostream>
 #include <iomanip>
@@ -75,7 +75,7 @@ do  // using a do-while will allow the menu to be shown until condition is met
             }
     
             cout << "Successfully set encryption key1 to " << key1 << endl; // prints success for key1 value
-            k1_done = true;
+            k1_done = true;                                                 // updates bool value that determines if user met requirements to encrypt/decrypt
 
             break;
 
@@ -94,7 +94,7 @@ do  // using a do-while will allow the menu to be shown until condition is met
             }
     
             cout << "Successfully set encryption key2 to " << key2 << endl; // prints success for key2 value
-            k2_done = true;
+            k2_done = true;                                                 // updates bool value that determines if user met requirements to encrypt/decrypt
 
             break;
 
@@ -122,7 +122,7 @@ do  // using a do-while will allow the menu to be shown until condition is met
             }
 
             cout << "Successfully set encryption type to " << method_input << endl; // prints success for method value
-            m_done = true;
+            m_done = true;                                                          // updates bool value that determines if user met requirements to encrypt/decrypt
 
             break;
 
