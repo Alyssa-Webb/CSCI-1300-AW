@@ -20,24 +20,23 @@ string encryptMessage(string message, int method_choice, string key1, string key
 // Main
 int main ()
 {
-
-bool program_running = true; // while true, program continues, when false, program terminates
-
-while (program_running) { // while the program is not exited, it will continue to run
-    int user_input = 0;
-    int method_input = 0;
-
-    string key1 = "";
-    string key2 = "";
-    string message = "";
-
-    bool key1_done = false; // setting key1 to false ensures that user has met requirements to encrypt/decrypt a message
-    bool key2_done = false; // setting key2 to false ensures that user has met requirements to encrypt/decrypt a message
-    bool encryption_done = false; // setting encryption to false ensures that user has met requirements to encrypt/decrypt a message
+    int user_input;     // stores input for menu (1-6)
+    int method_input;   // stores the users chosen method (1-4)
     
-    while (user_input < 1 || user_input > 6)
-    {
-    cout << "Please input 1-6 followed by enter to navigate the menu:\n"
+    string key1;        // stores key1
+    string key2;        // stores key2
+    string message;     // stores the message the user wants to encrypt or decrypt
+    string result;      // stores the result from encrypting/decrypting
+
+    // determines if user met requirements to encrypt/decrypt a message
+    bool k1_done = false;      // if key one has a valid value, evaluates true
+    bool k2_done = false;      // if key two has a valid value, evaluates true
+    bool m_done = false;       // if key method has a valid valie, evaluates true
+
+do  // using a do-while will allow the menu to be shown until condition is met
+{
+    // menu shown to user, they can choose an input 1-6, where 6 terminates the program
+    cout << "Please input 1-6 followed by enter to navigate the menu:\n" 
             << "1. Set Encryption Key 1\n"
             << "2. Set Encryption Key 2\n"
             << "3. Select Encryption Method\n"
@@ -45,109 +44,131 @@ while (program_running) { // while the program is not exited, it will continue t
             << "5. Decrypt Message\n"
             << "6. Exit Program"
             << endl;
-    cin >> user_input;
+    cin >> user_input;                      // stores input for the menu-oriented program
+    
+    // if user input is invalid  
+    while (cin.fail() || user_input < 1 || user_input > 6) 
+        // cin.fail becomes true when user_input is invalid, evaluates true
+        // if user input is 0 or negative, invalid, evaluates true
+        // if user input is beyond program limits (6), invalid, evaluates true
+    { 
+        cout << "Invalid input" << endl;    // outputs to the user that their input was invalid
+        cin.clear();                        // buffer is cleared so that a new input can be stored
+        cin.ignore(10000,'\n');             // ignores '\n' for x (1000) characters
+        cin >> user_input;                  // cin was cleared, ask for user input again, loop will continue until input is valid
     }
 
-    switch (user_input) 
+    switch (user_input)
     {
-        case 1: // Encryption Key 1
-            while (!key1_done)
-            {
-                cout << "Enter key:" << endl;
-                cin >>  key1;
-                
-                if (key1.length() > 1)
-                {
-                    cout << "Successfully set encryption key1 to " << key1 << endl; 
-                    key1_done = true;
-                }
-                else 
-                {
-                    cout << "Invalid key" << endl;
-                    cin.clear();
-                }
-
-            }
-            key1_done = true;
-            break;
-        case 2: // Encryption Key 2
-            while (!key2_done)
-            {
-                cout << "Enter key:" << endl;
-                cin >>  key2;
-                
-                if (key2.length() > 1)
-                {
-                    cout << "Successfully set encryption key2 to " << key2 << endl; 
-                    key2_done = true;
-                }
-                else 
-                {
-                    cout << "Invalid key" << endl;
-                    cin.clear();
-                }
-            }
-            key2_done = true;
-            break;
-        case 3: // Encryption Method
-            while (!encryption_done)
-            {
-                cout << "Please input 1-4 to decide encryption technique.\n"
-                        << "1. Method1 only (shift by 1) \n"
-                        << "2. Method2 only (shift by first key)\n"
-                        << "3. Method3 only (shift by both keys)\n"
-                        << "4. Mix of Method1, Method2, Method3\n"
-                        << endl;
-                    cin >> method_input;
-
-                if ((method_input != 1) && (method_input != 2) && (method_input != 3) && (method_input != 4))
-                {
-                    cout << "Invalid encryption choice" << endl;
-                    cin.clear();
-                }
-                else 
-                {
-                    cout << "Successfully set encryption type to " << method_input << endl;
-                    encryption_done = true;
-                }
-            }
-            encryption_done = true;
-            break;
-        case 4: // Encrypt Message
-            if (!key1_done && !key2_done && !encryption_done)
-            {
-                cin.ignore(1000, '\n');
-                cin.clear();
-                cout << "Enter your message to encrypt:" << endl;
-                getline(cin, message);
-                cout << encryptMessage(message, method_input, key1, key2) << endl;
-            }
-            else
-            {
-                cout << "You cannot do this until you set both keys and choose an encryption method" << endl;
-            }
-            break;
+        case 1: // set encryption key 1
+        // input will be checked by the while loop
+            cout << "Enter key:" << endl;   // prompts user to enter key1 string
             
-        case 5: // Decrypt Message
-            if (!key1_done && !key2_done && !encryption_done )
-            {   
-                cin.ignore(1000, '\n');
-                cin.clear();
-                cout << "Enter your message to encrypt:" << endl;
-                getline(cin, message);
-                cout << decryptMessage(message, method_input, key1, key2) << endl;
+            cin.ignore(10000,'\n');         // cin will ignore '\n'
+            getline(cin, key1);             // assigns input without '\n' to key1
+
+            while (key1.length() < 1)       // if the length of the string is less than one, prints invalid input and requests another input
+            {
+                cout << "Invalid key" << endl;  // informs user their input was not valid
+                cout << "Enter key:" << endl;   // prompts to input another key
+                getline (cin, key1);            // will take input and check validity
+            }
+    
+            cout << "Successfully set encryption key1 to " << key1 << endl; // prints success for key1 value
+            k1_done = true;
+
+            break;
+
+        case 2: // set encryption key 2
+        // input will be checked by the while loop
+            cout << "Enter key:" << endl; // prompts user to enter key1 string
+            
+            cin.ignore(10000,'\n');       // cin will ignore '\n'
+            getline(cin, key2);           // assigns input without '\n' to key1
+
+            while (key2.length() < 1)     // if the length of the string is less than one, prints invalid input and requests another input
+            {
+                cout << "Invalid key" << endl;  // informs user their input was not valid
+                cout << "Enter key:" << endl;   // prompts to input another key
+                getline (cin, key2);            // will take input and check validity
+            }
+    
+            cout << "Successfully set encryption key2 to " << key2 << endl; // prints success for key2 value
+            k2_done = true;
+
+            break;
+
+
+        case 3: // select method
+        // user is given a menu of encryption techniques, must choose a valid input between (1,4)
+        // input will be checked by the while loop
+            cout << "Please input 1-4 to decide encryption technique.\n"
+                 << "1. Method1 only (shift by 1) \n"
+                 << "2. Method2 only (shift by first key)\n"
+                 << "3. Method3 only (shift by both keys)\n"
+                 << "4. Mix of Method1, Method2, Method3"
+                 << endl;
+            cin >> method_input;
+
+            while (cin.fail() || method_input < 1 || method_input > 4) 
+                // cin.fail becomes true when method_input is invalid, evaluates true
+                // if user input is 0 or negative, invalid, evaluates true
+                // if user input is beyond program limits (4), invalid, evaluates true
+            { 
+                cout << "Invalid encryption choice" << endl;    // outputs to the user that their input was invalid
+                cin.clear();                        // buffer is cleared so that a new input can be stored
+                cin.ignore(10000,'\n');             // ignores '\n' for x (1000) characters
+                cin >> method_input;                // cin was cleared, ask for user input again, loop will continue until input is valid
+            }
+
+            cout << "Successfully set encryption type to " << method_input << endl; // prints success for method value
+            m_done = true;
+
+            break;
+
+
+        case 4: // encrypt message
+            if ((k1_done == false) || (k2_done == false) || (m_done == false ))
+            {
+                cout << "You cannot do this until you set both keys and choose an encryption method " << endl; // prints to the user they have not met all requirements to encrypt/decrypt
             }
             else
             {
-                cout << "You cannot do this until you set both keys and choose an encryption method" << endl;
+                cout << "Enter your message to encrypt: " << endl;  // prompts user to enter their desired message for ENCRYPTION
+                cin.ignore(10000,'\n');                             // ignores '\n' for x (1000) characters
+                getline(cin, message);                              // input is used for var string message
+                
+                result = encryptMessage(message, method_input, key1, key2); // calls function using users input parameters
+                cout << result << endl;
             }
+
             break;
-        case 6: // Exit Program
-            cout << "Goodbye." << endl;
-            program_running = false;
+
+        case 5: // decrypt message
+            if ((k1_done == false) || (k2_done == false) || (m_done == false ))
+            {
+                cout << "You cannot do this until you set both keys and choose an encryption method " << endl; // prints to the user they have not met all requirements to encrypt/decrypt
+            }
+            else
+            {
+                cout << "Enter your message to decrypt: " << endl;  // prompts user to enter their desired message for DECRYPTION
+                cin.ignore(10000,'\n');                             // ignores '\n' for x (1000) characters
+                getline(cin, message);                              // input is used for var string message
+                
+                result = decryptMessage(message, method_input, key1, key2); // calls function using users input parameters
+                cout << result << endl;
+            }
+
             break;
+
+        case 6: // terminates program
+            cout << "Goodbye." << endl;     // prints "Goodbye." to the user before terminating
+
+            break;                          // loop and therefore terminates the program
     }
-}
+
+} while (user_input != 6);           // while the program is not exited (input !=6) the program will run
+
 }
 
 // Method 1
