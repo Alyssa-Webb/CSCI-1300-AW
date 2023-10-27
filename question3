@@ -1,0 +1,107 @@
+
+
+// CSCI 1300 Fall 2023
+// Author: Alyssa Webb
+// TA: Anil
+// Question 3
+
+
+// Function 1
+/* First, we need to write a function that reads a file containing spam 
+words and their corresponding thresholds and stores them in an array. 
+The file has two columns, the first column is the spam keyword and 
+the second column is its corresponding threshold.  */
+
+// string keyword_file: filename containing the keyword.
+// string keyword_threshold[][2]: array that contains the keyword and the corresponding threshold
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// CSCI 1300 Fall 2023
+// Author: Alyssa Webb
+// TA: Anil
+// Question 3
+
+// reads the spam words & their thresholds
+int keywordThreshold(string keyword_file, string keyword_threshold[][2]) // counts the number of keywords read in keyword_file
+{
+    ifstream file(keyword_file); // opens a keyword
+    
+    const int x = 10, y = 2; // max capacity
+    int row_count = 0;
+
+    if (file.is_open())      // checks if file is open, continues
+    {
+    while (row_count < y && file >> keyword_threshold[row_count][0] >> keyword_threshold[row_count][1]) {
+        row_count++; // counts the number of rows
+    }
+    }
+    else             // file can't be open
+    {
+        cout << "Failed to open keyword file" << endl;
+        return 0;
+    }
+    file.close();
+
+    return row_count;   // returns # of rows, total keywords
+} 
+
+// reads an email file to calculates the frequency of the each spam word onto a separate array
+bool countFilter(string email_file, string keyword_threshold[][2], int keyword_count[], int keyword_size)
+{
+    ifstream file(email_file);
+
+    if (file.is_open())
+    {
+        string email;  // email
+        string line;  // To temporarily store each line
+
+        while (getline(file, line))
+        {
+            email += line;  // adds to email
+        }
+
+        // use array to store the counts of each keyword
+        keyword_count[] = {0};
+
+        for (int i = 0; i < email.size(); i++)
+        {
+            for (int j = 0; j < keyword_size; j++)
+            {
+                if (email[i] == keyword_threshold[j][0][0])
+                {
+                    keyword_count[j]++;
+                }
+            }
+        }
+    }
+    else
+    {
+        cout << "Failed to open email file" << endl; // prints failure to open the file
+        return false;
+    }
+
+    return true;
+}
+
+
+bool checkSpam(int keyword_count[], string keyword_threshold[][2], int keyword_size)
+{
+    for (int i = 0; i < keyword_size; i++)
+    {
+        int count = keyword_count[i];  // gets the count for index i in keyword
+        int threshold = stoi(keyword_threshold[i][1]);  // makes the string an integer
+
+        if (count <= threshold) // less than the requirement to be considered spam
+        {
+            return false;  // since its less than requirement, its not spam
+        }
+    }
+
+    return true;
+}
